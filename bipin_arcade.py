@@ -1,4 +1,5 @@
 import os
+import random
 
 
 
@@ -107,7 +108,40 @@ def tic_tac_toe():
         return ans
 
 
-        
+def r_p_s():
+    l = ["rock","paper","scissors"]
+    win_count = int(0)
+    os.system('cls')
+    print("\tWelcome to Rock Paper Scissors\n You have 3 try")
+    for i in range(1,4):
+        computer_choice = random.choice(l)
+        print(f"Game number {i}")
+        result = input("Enter you choice: ")
+        if result == computer_choice:
+            print("Draw")
+        elif result == "rock":
+            if computer_choice == "scissors":
+                print(f"You won round {i}. Your opponent choosed {computer_choice}")
+                win_count+=1
+            else:
+                 print(f"You lost round {i}. Your opponent choosed {computer_choice}")
+        elif result == "paper":
+            if computer_choice == "scissors":
+                print(f"You lost round {i}. Your opponent choosed {computer_choice}")
+            else:
+                 print(f"You won round {i}. Your opponent choosed {computer_choice}")
+                 win_count+=1
+        elif result == "scissors":
+            if computer_choice == "rock":
+                print(f"You lost round {i}. Your opponent choosed {computer_choice}")
+            else:
+                 print(f"You won round {i}. Your opponent choosed {computer_choice}")
+                 win_count+=1
+    os.system('cls')
+    print("You won "+str(win_count)+" times")
+    print("Nice game!")
+    ans = input("Do you want to play again?[Y/N]: ")
+    return ans
        
                     
 
@@ -120,9 +154,16 @@ def main():
         print("\t\t\tWelcome to Bipin Arcade")
         print("\t\t\t\tGames list:")
         print("\n\t\t\ta. Tic Tac Toe")
+        print("\n\t\t\tb. Rock Paper Scissors")
         ans = input("\n\t\t\tWhich game do you want to play: ")
         if ans == "a":
             want_to_play_again = tic_tac_toe()
+            if want_to_play_again == 'Y':
+                main()
+            else:
+                break
+        if ans == "b":
+            want_to_play_again = r_p_s()
             if want_to_play_again == 'Y':
                 main()
             else:
