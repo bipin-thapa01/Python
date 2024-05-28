@@ -20,7 +20,7 @@ def change_text_color(color):
 def take_text():
     input_string = main_text.get("1.0",tk.END)
     file_path = filedialog.asksaveasfilename(defaultextension=".txt",
-                                             filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
+                                             filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")])
     if file_path:
         try:
             with open(file_path, "w") as file:
@@ -28,9 +28,51 @@ def take_text():
         except Exception as e:
             print("File cretaion error!")
 
+def open_new_file_without_doing_anything():
+    new_window.destroy()
+    main_text.delete('1.0',tk.END)
+
+
+def take_text_for_new_file():
+    input_string = main_text.get('1.0',tk.END)
+    file_path = filedialog.asksaveasfilename(defaultextension=".txt",
+                                             filetypes=[("Text Files","*.txt"),("All Files","*,*")])
+    if file_path:
+        try:
+            with open(file_path,"w") as file:
+                file.write(input_string)
+        except Exception as e:
+            print("File creation error!")
+    
+    main_text.delete('1.0',tk.END)
+
+
 #for new file
 def new_file():
+    global new_window
+    new_window = tk.Toplevel(m)
+    new_window.title("New File")
+    label = tk.Label(new_window,text="Do you want to save the content of current file?")
+    label.pack(padx=10,pady=10)
+    frame = tk.Frame(new_window)
+    frame.pack()
+    button_1 = tk.Button(frame,text="Yes",command=take_text_for_new_file)
+    button_1.grid(row=0,column=0)
+    button_2 = tk. Button(frame,text="No",command=open_new_file_without_doing_anything)
+    button_2.grid(row=0,column=1,padx=50)
+
+def open_file():
+    file_path = filedialog.askopenfilename(defaultextension=".txt",
+                                           filetypes=[("Text Files",".txt"),("All Files","*.*")])
+    if file_path:
+        try:
+            with open(file_path,"r") as file:
+                file_content = file.read()
+        except Exception as e:
+            print("File open error!")
     main_text.delete('1.0',tk.END)
+    main_text.insert('1.0',file_content)
+    
 
 m = tk.Tk(className=" Bipin Text Editor")
 m.geometry("1080x720")
@@ -57,7 +99,7 @@ m.config(menu=menu_bar)
 file = tk.Menu(menu_bar, tearoff = 0)
 menu_bar.add_cascade(label="File",menu=file)
 file.add_command(label="New File",command=new_file)
-file.add_command(label="Open",command=None)
+file.add_command(label="Open",command=open_file)
 file.add_command(label="Save",command=take_text)
 file.add_command(label="Exit",command=m.destroy)
 
